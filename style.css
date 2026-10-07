@@ -1,0 +1,76 @@
+/* Sem estilização ainda: bordas e fundos só para enxergar
+   onde cada área do grid começa e termina. */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.lanchonete {
+    display: grid;
+    gap: 12px;
+    max-width: 960px;
+    margin: 0 auto;
+
+    /* Celular: tudo empilhado. A chamada vem logo depois
+       do topo, porque é o que mais importa. */
+    grid-template-areas:
+        "topo"
+        "chamada"
+        "cadastro"
+        "espera";
+}
+
+.topo     { grid-area: topo; }
+.cadastro { grid-area: cadastro; }
+.espera   { grid-area: espera; }
+.chamada  { grid-area: chamada; }
+
+.topo,
+.cadastro,
+.espera,
+.chamada {
+    padding: 12px;
+    border: 2px solid #333333;
+}
+
+.topo     { background-color: #ffe8cc; }
+.cadastro { background-color: #e7f5ff; }
+.espera   { background-color: #ebfbee; }
+.chamada  { background-color: #fff0f6; }
+
+
+/* A lista de espera */
+
+.lista li {
+    padding: 8px;
+}
+
+/* Linhas zebradas: os itens pares (2º, 4º, 6º...) */
+.lista li:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* O primeiro da lista é o próximo a ser chamado */
+.lista li:first-child {
+    font-weight: bold;
+}
+
+
+/* A partir de 800px: três colunas, a do meio mais larga. */
+
+@media (min-width: 800px) {
+
+    .lanchonete {
+        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-areas:
+            "topo     topo   topo"
+            "cadastro espera chamada";
+    }
+
+}
