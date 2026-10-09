@@ -1,67 +1,74 @@
-
 function montarItensDatocandoagora(tocando) {
     let itens = '';
+
     for (let i = 0; i < tocando.length; i++) {
-        itens = itens + `<li>${tocando[i]}</li>`;
+        itens += `<li>${tocando[i]}</li>`;
     }
+
     return itens;
 }
 
 function montarTextoDaContagem(quantidade) {
     if (quantidade === 0) {
-        return 'Nenhuma musica na fila';
+        return 'Nenhuma música na fila';
     }
+
     if (quantidade === 1) {
-        return '1 musica na fila';
+        return '1 música na fila';
     }
-    return quantidade + ' musicas na fila';
+
+    return quantidade + ' músicas na fila';
 }
 
-// Devolve o problema do nome novo, ou '' se estiver tudo certo.
 function montarAvisoDoNovoNome(nome, tocandoagora) {
     if (nome === '') {
-        return 'Escreva o nome.';
+        return 'Escreva o nome da música.';
     }
-    if (tocando.agora.includes(nome)) {
+
+    if (tocandoagora.some(
+        musica => musica.toLowerCase() === nome.toLowerCase()
+    )) {
         return nome + ' já está na lista.';
     }
+
     return '';
 }
-
-
-/* -----------------------------------------------------------
-   Selecionar e lembrar
-   ----------------------------------------------------------- */
 
 const cadastro = document.querySelector('.cadastro');
 const campoNome = document.querySelector('.campo-nome');
 const aviso = document.querySelector('.aviso');
 
-const botaoadicionaraofim = document.querySelector('.botao-adicionar-ao-fim');
 const botaoTocarDepois = document.querySelector('.botao-tocar-depois');
 const botaoRemover = document.querySelector('.botao-remover');
 const botaoDesfazerUltima = document.querySelector('.botao-desfazer-ultima');
-
+const botaoChamar = document.querySelector('.botao-chamar');
 
 const telaContagem = document.querySelector('.contagem');
-const telaNomeChamado = document.querySelector('.nome-chamado');
 const telaLista = document.querySelector('.lista');
+const telaMusicaAtual = document.querySelector('.musica-atual');
 
-// Começa com três pessoas, para já ter o que ver.
+
 const tocando = {
-    agora: ['Ana', 'Bruno', 'Carla']
+    agora: ['Hard drive', 'Cemetery drive', 'Helena'],
+    musicaAtual: '',
+    historico: []
 };
 
+function guardarEstado() {
+    tocando.historico.push({
+        agora: [...tocando.agora],
+        musicaAtual: tocando.musicaAtual
+    });
+}
 
-/* -----------------------------------------------------------
-   Funções que mexem na tela
-   ----------------------------------------------------------- */
-
-// Redesenha a lista inteira a partir do array.
-// Toda operação na lista termina chamando esta função.
 function mostrartocandoagora() {
     telaLista.innerHTML = montarItensDatocandoagora(tocando.agora);
-    telaContagem.textContent = montarTextoDaContagem(tocando.agora.length);
+
+    telaContagem.textContent =
+        montarTextoDaContagem(tocando.agora.length);
+
+    telaMusicaAtual.textContent =
+        tocando.musicaAtual || 'Nada tocando';
 }
 
 function lerNome() {
@@ -72,79 +79,108 @@ function limparCampo() {
     campoNome.value = '';
 }
 
+
 mostrartocandoagora();
 
-
-/* -----------------------------------------------------------
-   Escutar
-   ----------------------------------------------------------- */
-
-// input: começou a digitar de novo, o aviso antigo sai.
 campoNome.addEventListener('input', function () {
     aviso.textContent = '';
 });
 
-// push: entra no fim
+
 cadastro.addEventListener('submit', function (evento) {
     evento.preventDefault();
 
     const nome = lerNome();
     aviso.textContent = montarAvisoDoNovoNome(nome, tocando.agora);
 
-    if (aviso.textContent === '') {
-        tocando.agora.push(nome);
-        limparCampo();
-        mostrartocandoagora();
+    if (aviso.textContent !== '') {
+        return;
     }
+
+    guardarEstado();
+    tocando.agora.push(nome);
+
+    limparCampo();
+    mostrartocandoagora();
+    aviso.textContent = 'Música adicionada ao fim!';
 });
 
-// unshift: entra no começo, é o próximo a ser chamado
-botaoadicionaraofim.addEventListener('click', function () {
+/* Tocar depois da música atual */
+
+botaoTocarDepois.addEventListener('click', function () {
     const nome = lerNome();
     aviso.textContent = montarAvisoDoNovoNome(nome, tocando.agora);
 
-    if (aviso.textContent === '') {
-        tocando.agora.unshift(nome);
-        limparCampo();
-        mostrartocandoagora();
+    if (aviso.textContent !== '') {
+        return;
     }
+
+    guardarEstado();
+
+
+    tocando.agora.unshift(nome);
+
+    limparCampo();
+    mostrartocandoagora();
+    aviso.textContent = 'Música adicionada para tocar em seguida!';
 });
 
-// shift: sai do começo, e devolve quem saiu
+/* Próxima música */
+
 botaoChamar.addEventListener('click', function () {
     if (tocando.agora.length === 0) {
-        aviso.textContent = 'Não tem ninguém esperando.';
-    } else {
-        telaNomeChamado.textContent = tocando.agora.shift();
-        aviso.textContent = '';
-        mostrartocandoagora();
+        aviso.textContent = 'Não há músicas na fila.';
+        return;
     }
+
+    guardarEstado();
+
+    tocando.musicaAtual = tocando.agora.shift();
+
+    mostrartocandoagora();
+    aviso.textContent = 'Agora tocando: ' + tocando.musicaAtual;
 });
 
-// pop: sai do fim, e também devolve quem saiu
-botaoDesfazer.addEventListener('click', function () {
-    if (tocando.agora.length === 0) {
-        aviso.textContent = 'Não tem ninguém esperando.';
-    } else {
-        const removido = tocando.agora.pop();
-        aviso.textContent = removido + ' saiu da lista.';
-        mostrartocandoagora();
-    }
-});
+/* Remover música*/
 
-// indexOf + splice: acha a posição e tira dali
-botaoDesistiu.addEventListener('click', function () {
+botaoRemover.addEventListener('click', function () {
     const nome = lerNome();
-    const posicao = tocando.agora.indexOf(nome);
 
     if (nome === '') {
-        aviso.textContent = 'Escreva o nome.';
-    } else if (posicao === -1) {
-        aviso.textContent = nome + ' não está na lista.';
-    } else {
-        tocando.agora.splice(posicao, 1);
-        aviso.textContent = nome + ' desistiu.';
-        limparCampo();
-        mostrartocandoagora();
+        aviso.textContent = 'Escreva o nome da música que deseja remover.';
+        return;
     }
+
+    const posicao = tocando.agora.findIndex(
+        musica => musica.toLowerCase() === nome.toLowerCase()
+    );
+
+    if (posicao === -1) {
+        aviso.textContent = nome + ' não está na fila.';
+        return;
+    }
+
+    guardarEstado();
+    tocando.agora.splice(posicao, 1);
+
+    limparCampo();
+    mostrartocandoagora();
+    aviso.textContent = nome + ' foi removida da fila.';
+});
+
+/* Desfazer última ação*/
+
+botaoDesfazerUltima.addEventListener('click', function () {
+    if (tocando.historico.length === 0) {
+        aviso.textContent = 'Não há ações para desfazer.';
+        return;
+    }
+
+    const anterior = tocando.historico.pop();
+
+    tocando.agora = anterior.agora;
+    tocando.musicaAtual = anterior.musicaAtual;
+
+    mostrartocandoagora();
+    aviso.textContent = 'Última ação desfeita!';
 });

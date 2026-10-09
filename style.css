@@ -1,6 +1,3 @@
-/* Sem estilização ainda: bordas e fundos só para enxergar
-   onde cada área do grid começa e termina. */
-
 * {
     box-sizing: border-box;
 }
@@ -11,66 +8,101 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.lanchonete {
+.playlist {
     display: grid;
     gap: 12px;
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
 
-    /* Celular: tudo empilhado. A chamada vem logo depois
-       do topo, porque é o que mais importa. */
     grid-template-areas:
-        "topo"
-        "chamada"
-        "cadastro"
-        "espera";
+        "Na fila"
+        "Tocando agora"
+        "Comandos"
+        "A seguir";
 }
 
-.topo     { grid-area: topo; }
-.cadastro { grid-area: cadastro; }
-.espera   { grid-area: espera; }
-.chamada  { grid-area: chamada; }
+.topo {
+    grid-area: topo;
+}
+
+.cadastro {
+    grid-area: cadastro;
+}
+
+.espera {
+    grid-area: espera;
+}
+
+.chamada {
+    grid-area: chamada;
+}
 
 .topo,
 .cadastro,
 .espera,
 .chamada {
     padding: 12px;
-    border: 2px solid #333333;
+    border: 1px solid #070707;
 }
 
-.topo     { background-color: #ffe8cc; }
-.cadastro { background-color: #e7f5ff; }
-.espera   { background-color: #ebfbee; }
-.chamada  { background-color: #fff0f6; }
+.topo {
+    background-color: #aceeff;
+}
 
+h2 {
+    margin: 0;
+    font-size: 26px;
+    font-family: "serif";
+    img {
+        vertical-align: middle;
+    }
+}
 
-/* A lista de espera */
+.cadastro {
+    background-color: #82cdff;
+}
+
+.espera {
+    background-color: #aed5fa;
+}
+
+.chamada {
+    background-color: #b9cdff;
+}
 
 .lista li {
     padding: 8px;
 }
 
-/* Linhas zebradas: os itens pares (2º, 4º, 6º...) */
 .lista li:nth-child(even) {
     background-color: #ffffff;
 }
 
-/* O primeiro da lista é o próximo a ser chamado */
 .lista li:first-child {
     font-weight: bold;
 }
 
-
-/* A partir de 800px: três colunas, a do meio mais larga. */
+.botoes button {
+    margin-bottom: 4px;
+}
 
 @media (min-width: 800px) {
-
-    .lanchonete {
-        grid-template-columns: 1fr 2fr 1fr;
+    .playlist {
+        grid-template-columns: 1fr 1fr;
         grid-template-areas:
-            "topo     topo   topo"
-            "cadastro espera chamada";
+            "topo topo"
+            "espera chamada"
+            "cadastro chamada";
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 8px;
     }
 
+    .botoes button {
+        max-width: 100%;
+    }
 }
+
