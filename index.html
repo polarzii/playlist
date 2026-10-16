@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de espera</title>
+    <title>Minha Playlist</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
@@ -14,57 +14,41 @@
     <main class="playlist">
 
         <header class="topo">
-            <h1>Na fila</h1>
-            <p class="contagem">3 músicas na fila</p>
+            <h1>Playlist</h1>
+            <p class="contagem"> Nenhma musica na fila</p>
         </header>
 
-        <form class="cadastro">
-            <h2>Comandos</h2>
+        <section class="cadastro">
+            <h2>Adicionar música</h2>
 
-            <p>
-                <label for="nome">Música</label>
-                <input type="text" id="nome" class="campo-nome">
-            </p>
+            <form class="formulario">
+                <p>
+                    <label for="musica">Nome da música</label>
+                    <input type="text" id="musica" class="campo-musica">
+                </p>
 
-            <div class="botoes">
-                <button type="submit" class="botao-adicionar-ao-fim">
-                    Adicionar ao fim
-                </button>
-
-                <button type="button" class="botao-tocar-depois">
-                    Tocar depois desta
-                </button>
-
-                <button type="button" class="botao-remover">
-                    Remover da fila
-                </button>
-
-                <button type="button" class="botao-desfazer-ultima">
-                    Desfazer última
-                </button>
-            </div>
+                <button type="submit">Adicionar à fila</button>
+            </form>
 
             <p class="aviso"></p>
-        </form>
-
-        <section class="espera">
-             <h2><img src="musica.png" width="80" alt="musica" class="logo">Tocando Agora </h2>
-
-            <p class="musica-atual">Nada tocando</p>
-            <button type="button" class="botao-chamar">
-                Próxima
-            </button>
         </section>
 
-        <section class="chamada">
-            <h2> <img src="play.png" width="40" alt="play" class="logo">A seguir</h2>
-            <ol class="lista">
-                <li class="musica">Hard drive</li>
-                <li class="musica">Cemetery drive</li>
-                <li class="musica">Helena</li>
-            </ol>
+        <section class="fila">
+            <h2>Fila de músicas</h2>
+            <ol class="lista"></ol>
+        </section>
 
+        <section class="tocando">
+            <h2> <img src="musica.png" width="50" height="30" alt="tocando agora">Tocando agora</h2>
+            <p class="musica-atual">Nenhama musica tocando agora/p>
 
+            <button type="button" class="botao-proxima">
+                Próxima
+            </button>
+
+            <h3> <img src="play.png" width="30" height="30" alt="Descrição da imagem">Já tocou</h3>
+            <ol class="lista-tocadas"></ol>
+        </section>
 
     </main>
 

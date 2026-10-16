@@ -6,20 +6,23 @@ body {
     margin: 0;
     padding: 16px;
     font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
 }
 
 .playlist {
     display: grid;
     gap: 12px;
-    max-width: 1200px;
+    max-width: 960px;
     margin: 0 auto;
 
     grid-template-areas:
-        "Na fila"
-        "Tocando agora"
-        "Comandos"
-        "A seguir";
+        "topo"
+        "tocando"
+        "cadastro"
+        "fila";
 }
+
+
 
 .topo {
     grid-area: topo;
@@ -29,46 +32,70 @@ body {
     grid-area: cadastro;
 }
 
-.espera {
-    grid-area: espera;
+.fila {
+    grid-area: fila;
 }
 
-.chamada {
-    grid-area: chamada;
+.tocando {
+    grid-area: tocando;
 }
 
 .topo,
 .cadastro,
-.espera,
-.chamada {
-    padding: 12px;
-    border: 1px solid #070707;
+.fila,
+.tocando {
+    padding: 20px;
+    border: 2px solid #333333;
+    border-radius: 8px;
 }
 
 .topo {
-    background-color: #aceeff;
-}
-
-h2 {
-    margin: 0;
-    font-size: 26px;
-    font-family: "serif";
-    img {
-        vertical-align: middle;
-    }
+    background-color: #8cafe4;
 }
 
 .cadastro {
-    background-color: #82cdff;
+    background-color: #70c2e9;
 }
 
-.espera {
-    background-color: #aed5fa;
+.fila {
+    background-color: #9ffae6;
 }
 
-.chamada {
-    background-color: #b9cdff;
+.tocando {
+    background-color: #a9d6f0;
 }
+
+/* Campos e botões */
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #888888;
+    border-radius: 4px;
+}
+
+img {
+  vertical-align: middle; 
+  margin-left: 2px;       
+}
+
+
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333333;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Lista de músicas */
 
 .lista li {
     padding: 8px;
@@ -82,27 +109,61 @@ h2 {
     font-weight: bold;
 }
 
-.botoes button {
-    margin-bottom: 4px;
+/* Botão de remover */
+
+.botao-remover {
+    margin-left: 8px;
+    padding: 2px;
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #888888;
+    line-height: 0;
+    vertical-align: middle;
+    cursor: pointer;
 }
+
+.botao-remover:hover {
+    color: #c62828;
+    background-color: #ffe3e3;
+}
+
+.botao-remover:focus-visible {
+    outline: 2px solid #c62828;
+}
+
+/* Etiqueta da próxima música */
+
+.etiqueta {
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: #333333;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+/* Músicas que já tocaram */
+
+.lista-tocadas {
+    color: #666666;
+}
+
+.aviso {
+    color: #c62828;
+}
+
+/* Layout para telas maiores */
 
 @media (min-width: 800px) {
+
     .playlist {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 4fr 4fr 5fr;
+
         grid-template-areas:
-            "topo topo"
-            "espera chamada"
-            "cadastro chamada";
+            "topo topo topo"
+            "cadastro fila tocando";
     }
+
 }
-
-@media (max-width: 500px) {
-    body {
-        padding: 8px;
-    }
-
-    .botoes button {
-        max-width: 100%;
-    }
-}
-
